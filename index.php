@@ -30,7 +30,7 @@
         <div class="row">
           <div class="col">
             <div class="text-end">
-              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addUser" data-bs-whatever="@mdo">Nuova Società</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addRow" data-bs-whatever="@mdo">Nuova Società</button>
             </div>
           </div>
         </div>
@@ -117,17 +117,8 @@
       </main>
     </div>
   </div>
-  <!-- jQuery library -->
-  <script src="../portale/assets/jquery/jquery-3.7.1.min.js"></script>
-  <script src="../portale/assets/jquery-ui/jquery-ui.js"></script>
-  <script src="../portale/assets/jquery-ui/datepicker-it.js"></script>
-  <script src="../portale/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../portale/assets/DataTables/datatables.min.js"></script>
-  <script src="../portale/assets/fontawesome/js/all.min.js"></script>
-  <script src="assets/service.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
-  <script src="dashboard.js"></script>
+  <?php include("../portale/javascript.php"); ?>
+  <?php include("../portale/footer.php"); ?>
 </body>
 
 </html>
