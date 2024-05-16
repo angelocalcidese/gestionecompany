@@ -15,7 +15,9 @@ if ($result->num_rows > 0) {
         $object->email = $row["email"]; 
         $object->telephone = $row["telephone"];
         $object->piva = $row["piva"];
-        $object->active = $row["active"]; 
+        $object->active = $row["active"];
+        $object->foto = $row["foto"];
+        $object->colori = $row["colori"];
         array_push($data, $object);
     }
   } else {

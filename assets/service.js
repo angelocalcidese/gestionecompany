@@ -1,6 +1,7 @@
 var rowel = [];
 var idRow = null;
 var statusVal = null;
+var color = {};
 
 function tablePagination() {
     $('table.display').DataTable({
@@ -32,8 +33,10 @@ function companyCall() {
                 } else { 
                     element += '<td><button type="button" class="btn btn-sm btn-outline-secondary" onClick="changeStatus(' + riga.id + ', 1)"><i class="fa-solid fa-xmark" style="color: #ec0909;"></i></button></td>';
                 }
-                
                 element += '<td><button type="button" class="btn btn-sm btn-outline-secondary" onClick="openModRow(' + riga.id + ')"><i class="fa-solid fa-square-pen"></i></button></td>';
+                element += '<td><button type="button" class="btn btn-sm btn-outline-secondary" onClick="openUploadImg(' + riga.id + ')"><i class="fa-solid fa-image"></i></button></td>';
+                element += '<td><button type="button" class="btn btn-sm btn-outline-secondary" onClick="openColor(' + riga.id + ')"><i class="fa-solid fa-palette"></i></button></td>';
+
                 $("<tr/>")
                     .append(element)
                     .appendTo("#tabella");
@@ -41,6 +44,103 @@ function companyCall() {
             tablePagination();
         }
     });
+}
+
+function resetColorModal() {
+    $("#header-color-logo").val("");
+    $("#header-color-barra").val("");
+    $("#testo-color-menu").val("");
+    color = {
+        "logo": "",
+        "header": "",
+        "textmenu": ""
+    }
+}
+
+function openColor(id) {
+    var comp = searchCompany(id);
+    idRow = id;
+    resetColorModal();
+    if (comp.colori) {
+        var colori = jQuery.parseJSON(comp.colori);
+        $("#header-color-logo").val(colori.logo);
+        $("#header-color-barra").val(colori.header);
+        $("#testo-color-menu").val(colori.textmenu);
+    }
+    $('#modalColor').modal('show');
+}
+function yesSendColor() {
+    var logo = $("#header-color-logo").val();
+    var header =$("#header-color-barra").val();
+    var textmenu = $("#testo-color-menu").val();
+    if ((logo != "") || (header != "") || (textmenu != "")) {
+       color = {
+            "logo": logo, 
+            "header": header,
+            "textmenu": textmenu
+        }
+        var data = searchCompany(idRow);
+        data.colori = JSON.stringify(color);
+        modRow(data); 
+        $('#modalColor').modal('hide');
+    } else {
+        $("#error-color").text("Inserire codici colori");
+    }
+    
+}
+
+function searchCompany(id) { 
+    var resp = null;
+    for (var a = 0; a < rowel.length; a++){
+        if (id == rowel[a].id) {
+            resp = rowel[a];
+        }
+    }
+    return resp;
+}
+
+function resetModalImg() {
+    $(".spinner-border").addClass("hide");
+    $(".button-close-send").attr("disabled", false);
+    $(".button-send").attr("disabled", false);
+    $("#img-area").removeClass("hide");
+}
+
+function openUploadImg(id) {
+    var comp = searchCompany(id);
+    idRow = id;
+    resetModalImg();
+    if (comp.foto) {
+        $(".img-company").removeClass("hide");
+        var img = "../../portale/logo_img/" + comp.foto;
+        $(".img-company").attr("src", img);
+    } else {
+        $(".img-company").addClass("hide");
+    }
+    $('#modalImage').modal('show');
+}
+
+function yesSendImg() {
+    $(".button-close-send").attr("disabled", true);
+    $(".button-send").attr("disabled", true);
+    $(".spinner-border").removeClass("hide");
+    $("#img-area").addClass("hide");
+    $("#error-image").text("");
+
+    var upload = document.querySelector('#input-imgcompany').files[0];
+    //console.log(upload);
+    if (upload && controlFileTypeImg(upload)) {
+            var reader = new FileReader();
+            reader.readAsDataURL(upload);
+            reader.onload = function () {
+            file = reader.result;
+                var data = searchCompany(idRow);
+            modRow(data, file, upload.name);
+        };
+    } else {
+        $("#error-image").text("Inserire un immagine valida");
+        resetModalImg();
+    }
 }
 
 function searchData(id) {
@@ -53,25 +153,40 @@ function searchData(id) {
     return data;
 }
 
-function modRow(data) {
+function modRow(data, file, nomefile) {
     console.log("DATA", data);
+    
     $.ajax({
         method: "POST",
         url: "api/modCompany.php",
-        data: JSON.stringify({ id: data.id, name: data.name, piva: data.piva, address: data.address, email: data.email, telephone: data.telephone, active: data.active }),
+        data: JSON.stringify({ id: data.id, name: data.name, piva: data.piva, address: data.address, email: data.email, telephone: data.telephone, active: data.active, foto: data.foto, file: file, nomeFile: nomefile, colori: data.colori }),
         contentType: "application/json",
         success: function (data) {
-            console.log("funzione chiamata quando la chiamata ha successo (response 200)", data);
+            if (file) {
+                resetModalImg();
+                $('#modalImage').modal('hide');
+                location.reload();
+            } else {
+             console.log("funzione chiamata quando la chiamata ha successo (response 200)", data);
             $("#alert-success").removeClass("hide");
             $("#alert-success").text("Società inserita correttamente");
             $("#form-add").addClass("hide");
             $("#add-button").addClass("hide");
-            cleanInput();
+            cleanInput();   
+            }
+            
+
         },
         error: function (error) {
-            console.log("funzione chiamata quando la chiamata fallisce", error);
-            $("#alert-error").removeClass("hide");
-            $("#alert-error").text(error);
+            if (file) {
+                $("#error-image").text("Errore durante il caricamento dell'immagine");
+                resetModalImg();
+            } else {
+              console.log("funzione chiamata quando la chiamata fallisce", error);
+                $("#alert-error").removeClass("hide");
+                $("#alert-error").text(error);  
+            }
+            
         }
     });
 }
