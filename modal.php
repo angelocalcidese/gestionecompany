@@ -77,18 +77,42 @@
                 <div id="mounth-color">
                     <h6 class="mt-2" style="color:#FF0000" id="error-color"></h6>
                 </div>
-                <div class="form-floating w-50">
-                    <input type="text" class="form-control" id="header-color-logo" placeholder="#00000">
-                    <label for="header-color-logo">Header Colore Logo</label>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2">
+                            <input type="color" class="form-control form-control-color mb-3" onchange="popColor()" id="header-color-logo-exp" value="#CCCCCC" title="Choose your color">
+                        </div>
+                        <div class="col-8">
+                            <div class="form-floating ">
+                                <input type="text" class="form-control" id="header-color-logo" onchange="popInput()" placeholder="#00000">
+                                <label for="header-color-logo">Header Colore Logo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2">
+                            <input type="color" class="form-control form-control-color mb-3" onchange="popColor1()" id="header-color-barra-exp" value="#CCCCCC" title="Choose your color">
+                        </div>
+                        <div class="col-8">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="header-color-barra" onchange="popInput1()" placeholder="#00000">
+                                <label for="header-color-barra">Header Colore Intestazione</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2">
+                            <input type="color" class="form-control form-control-color mb-3" onchange="popColor2()" id="testo-color-menu-exp" value="#CCCCCC" title="Choose your color">
+                        </div>
+                        <div class="col-8">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="testo-color-menu" onchange="popInput2()" placeholder="#00000">
+                                <label for="testo-color-menu">Colore Testo Menu</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-floating w-50 mt-3">
-                    <input type="text" class="form-control" id="header-color-barra" placeholder="#00000">
-                    <label for="header-color-barra">Header Colore Intestazione</label>
-                </div>
-                <div class="form-floating w-50 mt-3">
-                    <input type="text" class="form-control" id="testo-color-menu" placeholder="#00000">
-                    <label for="testo-color-menu">Colore Testo Menu</label>
-                </div>
+
                 <div class="spinner-border text-warning mt-3 hide" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>

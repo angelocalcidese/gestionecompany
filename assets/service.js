@@ -64,8 +64,11 @@ function openColor(id) {
     if (comp.colori) {
         var colori = jQuery.parseJSON(comp.colori);
         $("#header-color-logo").val(colori.logo);
+        $("#header-color-logo-exp").val(colori.logo);
         $("#header-color-barra").val(colori.header);
+        $("#header-color-barra-exp").val(colori.header);
         $("#testo-color-menu").val(colori.textmenu);
+        $("#testo-color-menu-exp").val(colori.textmenu);
     }
     $('#modalColor').modal('show');
 }
@@ -294,13 +297,47 @@ function addRow() {
 
 }
 
-function closeModal() {
+/*function closeModal() {
     window.location.reload(true);
+}*/
+
+function popInput() {
+    var col = $("#header-color-logo").val();
+    console.log("COL: ", col);
+    $("#header-color-logo-exp").val(col);
 }
 
+function popColor() {
+    var col = $("#header-color-logo-exp").val();
+    console.log("COL: ", col);
+    $("#header-color-logo").val(col);
+}
+function popInput1() {
+    var col = $("#header-color-barra").val();
+    console.log("COL: ", col);
+    $("#header-color-barra-exp").val(col);
+}
+
+function popColor1() {
+    var col = $("#header-color-barra-exp").val();
+    console.log("COL: ", col);
+    $("#header-color-barra").val(col);
+}
+function popInput2() {
+    var col = $("#testo-color-menu").val();
+    console.log("COL: ", col);
+    $("#testo-color-menu-exp").val(col);
+}
+
+function popColor2() {
+    var col = $("#testo-color-menu-exp").val();
+    console.log("COL: ", col);
+    $("#testo-color-menu").val(col);
+}
 
 $(document).ready(function () {
     companyCall();
+    console.log("READY");
 });
     
            
